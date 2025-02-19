@@ -39,6 +39,12 @@ fun DataEntryScreen(navController: NavHostController, viewModel: DataViewModel) 
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            Button(
+                onClick = { navController.navigate("list") },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Lihat Data")
+            }
             Text(
                 text = "Input Data",
                 style = MaterialTheme.typography.headlineMedium

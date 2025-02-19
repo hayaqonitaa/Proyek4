@@ -13,5 +13,5 @@ data class DataEntity(
     val namaKabupatenKota: String,
     val total: Double,
     val satuan: String,
-    val tahun: Int
+    val tahun: Int,
 )

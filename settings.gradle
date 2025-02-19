@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "hanyarunrun"
+rootProject.name = "Aplikasi Haya"
 include ':app'
