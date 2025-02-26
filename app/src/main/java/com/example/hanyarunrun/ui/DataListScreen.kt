@@ -13,9 +13,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import com.example.hanyarunrun.viewmodel.DataViewModel
 import com.example.hanyarunrun.data.DataEntity
-
+import com.example.hanyarunrun.ui.components.JetsnackCard
+import com.example.hanyarunrun.ui.components.JetsnackButton
+import com.example.hanyarunrun.ui.components.JetsnackDivider
+import com.example.hanyarunrun.ui.theme_navbar.JetsnackTheme
 
 @Composable
 fun DataListScreen(navController: NavHostController, viewModel: DataViewModel) {
@@ -23,7 +28,15 @@ fun DataListScreen(navController: NavHostController, viewModel: DataViewModel) {
     var showDialog by remember { mutableStateOf(false) }
     var selectedItem by remember { mutableStateOf<DataEntity?>(null) as MutableState<DataEntity?> }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier.fillMaxSize()
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(Color.Black, Color.Black)
+                )
+            )
+
+    ) {
         Column(modifier = Modifier.fillMaxSize()) {
             if (dataList.isEmpty()) {
                 Box(
@@ -33,70 +46,77 @@ fun DataListScreen(navController: NavHostController, viewModel: DataViewModel) {
                     Text(text = "No Data Available", style = MaterialTheme.typography.headlineMedium)
                 }
             } else {
-                LazyColumn(
-                    modifier = Modifier
-                        .weight(1f) // Memberikan sisa ruang untuk daftar data
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    items(dataList) { item ->
-                        Card(
-                            shape = RoundedCornerShape(12.dp),
-                            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .background(MaterialTheme.colorScheme.surface)
-                                    .padding(16.dp)
-                            ) {
-                                Text(
-                                    text = "Provinsi: ${item.namaProvinsi} (${item.kodeProvinsi})",
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Spacer(modifier = Modifier.height(4.dp))
-                                Text(
-                                    text = "Kabupaten/Kota: ${item.namaKabupatenKota} (${item.kodeKabupatenKota})",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                                Spacer(modifier = Modifier.height(4.dp))
-                                Text(
-                                    text = "Total: ${item.total} ${item.satuan}",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                                Spacer(modifier = Modifier.height(4.dp))
-                                Text(
-                                    text = "Tahun: ${item.tahun}",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.End,
-                                    verticalAlignment = Alignment.CenterVertically
+                JetsnackTheme {
+                    LazyColumn(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        items(dataList) { item ->
+                            Column {
+                                JetsnackCard(
+                                    modifier = Modifier.fillMaxWidth()
                                 ) {
-                                    Button(
-                                        onClick = {
-                                            navController.navigate("edit/${item.id}")
-                                        },
-                                        shape = RoundedCornerShape(8.dp)
+                                    Column(
+                                        modifier = Modifier
+                                            .padding(16.dp)
                                     ) {
-                                        Text(text = "Edit")
-                                    }
-                                    Spacer(modifier = Modifier.width(8.dp)) // Jarak antara tombol
-
-                                    Button(
-                                        onClick = {
-                                            selectedItem = item
-                                            showDialog = true
-                                        },
-                                        shape = RoundedCornerShape(8.dp),
-                                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-                                    ) {
-                                        Text(text = "Delete")
+                                        Text(
+                                            text = "Provinsi: ${item.namaProvinsi} (${item.kodeProvinsi})",
+                                            style = MaterialTheme.typography.titleMedium,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                        Text(
+                                            text = "Kabupaten/Kota: ${item.namaKabupatenKota} (${item.kodeKabupatenKota})",
+                                            style = MaterialTheme.typography.bodyMedium
+                                        )
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                        Text(
+                                            text = "Total: ${item.total} ${item.satuan}",
+                                            style = MaterialTheme.typography.bodyMedium
+                                        )
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                        Text(
+                                            text = "Tahun: ${item.tahun}",
+                                            style = MaterialTheme.typography.bodyMedium
+                                        )
+                                        Spacer(modifier = Modifier.height(8.dp))
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.End,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            JetsnackButton(
+                                                onClick = {
+                                                    navController.navigate("edit/${item.id}")
+                                                },
+                                                shape = RoundedCornerShape(8.dp)
+                                            ) {
+                                                Text(text = "Edit")
+                                            }
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            JetsnackButton(
+                                                onClick = {
+                                                    selectedItem = item
+                                                    showDialog = true
+                                                },
+                                                shape = RoundedCornerShape(8.dp),
+                                            ) {
+                                                Text(text = "Delete")
+                                            }
+                                        }
                                     }
                                 }
+                                JetsnackTheme{
+                                    JetsnackDivider(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 5.dp)
+                                    )
+                                }
+
                             }
                         }
                     }
@@ -109,7 +129,7 @@ fun DataListScreen(navController: NavHostController, viewModel: DataViewModel) {
             shape = RoundedCornerShape(50),
             modifier = Modifier
                 .padding(16.dp)
-                .align(Alignment.BottomEnd) // Meletakkan FAB di kanan bawah
+                .align(Alignment.BottomEnd)
         ) {
             Text(text = "+", style = MaterialTheme.typography.headlineMedium)
         }
@@ -125,7 +145,7 @@ fun DataListScreen(navController: NavHostController, viewModel: DataViewModel) {
                 Button(
                     onClick = {
                         selectedItem?.let { item ->
-                            viewModel.deleteData(item) // Menghapus item yang benar
+                            viewModel.deleteData(item)
                         }
                         showDialog = false
                     },
@@ -135,9 +155,7 @@ fun DataListScreen(navController: NavHostController, viewModel: DataViewModel) {
                 }
             },
             dismissButton = {
-                Button(
-                    onClick = { showDialog = false }
-                ) {
+                Button(onClick = { showDialog = false }) {
                     Text("No")
                 }
             }
