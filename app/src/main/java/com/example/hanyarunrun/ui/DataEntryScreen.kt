@@ -4,7 +4,6 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -15,8 +14,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.navigation.NavHostController
 import com.example.hanyarunrun.viewmodel.DataViewModel
+import com.example.hanyarunrun.ui.components.JetsnackButton
+import com.example.hanyarunrun.ui.theme_navbar.JetsnackTheme
 
 @Composable
 fun DataEntryScreen(navController: NavHostController, viewModel: DataViewModel) {
@@ -39,16 +41,22 @@ fun DataEntryScreen(navController: NavHostController, viewModel: DataViewModel) 
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Button(
-                onClick = { navController.navigate("list") },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Lihat Data")
+            JetsnackTheme {
+                // Tombol untuk melihat data
+                JetsnackButton(
+                    onClick = { navController.navigate("list") },
+                    shape = RectangleShape,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Lihat Data")
+                }
             }
+
             Text(
                 text = "Input Data",
                 style = MaterialTheme.typography.headlineMedium
             )
+
             OutlinedTextField(
                 value = kodeProvinsi,
                 onValueChange = { kodeProvinsi = it },
@@ -93,25 +101,28 @@ fun DataEntryScreen(navController: NavHostController, viewModel: DataViewModel) 
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth()
             )
-            Button(
-                onClick = {
-                    // Memanggil fungsi insertData pada ViewModel
-                    viewModel.insertData(
-                        kodeProvinsi = kodeProvinsi,
-                        namaProvinsi = namaProvinsi,
-                        kodeKabupatenKota = kodeKabupatenKota,
-                        namaKabupatenKota = namaKabupatenKota,
-                        total = total,
-                        satuan = satuan,
-                        tahun = tahun
-                    )
-                    Toast.makeText(context, "Data berhasil ditambahkan!", Toast.LENGTH_SHORT).show()
-                    // Navigasi ke tampilan daftar data
-                    navController.navigate("list")
-                },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Submit Data")
+
+            JetsnackTheme {
+                // Tombol submit menggunakan JetsnackButton
+                JetsnackButton(
+                    onClick = {
+                        viewModel.insertData(
+                            kodeProvinsi = kodeProvinsi,
+                            namaProvinsi = namaProvinsi,
+                            kodeKabupatenKota = kodeKabupatenKota,
+                            namaKabupatenKota = namaKabupatenKota,
+                            total = total,
+                            satuan = satuan,
+                            tahun = tahun
+                        )
+                        Toast.makeText(context, "Data berhasil ditambahkan!", Toast.LENGTH_SHORT).show()
+                        navController.navigate("list")
+                    },
+                    shape = RectangleShape,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Submit Data")
+                }
             }
         }
     }

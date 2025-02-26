@@ -16,6 +16,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
 import com.example.hanyarunrun.viewmodel.DataViewModel
+import com.example.hanyarunrun.ui.screens.SplashScreen
 
 @Composable
 fun AppNavHost(viewModel: DataViewModel) {
@@ -34,9 +35,12 @@ fun AppNavHost(viewModel: DataViewModel) {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "list",
+            startDestination = "splash",
             modifier = Modifier.padding(innerPadding)
         ) {
+            composable("splash") {
+                SplashScreen(navController)
+            }
             composable("form") {
                 DataEntryScreen(navController = navController, viewModel = viewModel)
             }
