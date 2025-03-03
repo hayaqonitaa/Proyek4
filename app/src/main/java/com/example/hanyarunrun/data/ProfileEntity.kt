@@ -6,9 +6,9 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "profile_table")
 data class ProfileEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val id: Int = 1,
     val studentName: String,
     val studentId: String,
     val studentEmail: String,
-    val profileUri: String? = null
+    val profileUri: String?
 )
